@@ -2,7 +2,7 @@
   "name": "grp1",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://HNOONa-0.github.io/React_Graph_Project",
+  "homepage": "https://HNOONa-0.github.io/react-graph-project",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
