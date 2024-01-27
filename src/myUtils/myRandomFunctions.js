@@ -1,6 +1,4 @@
-// changes
-// name changed from randomNumberGenerator to randomBetween
-// now is end exclusive
+// random number between a range
 export const randomBetween = (i, j) => {
   if ((!i && i !== 0) || !j) throw "no arguments were passed to randomBetween";
   if (i < 0 || j < 0) throw "negative numbers in randomBetween";

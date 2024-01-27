@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { Rect } from "react-konva";
+// older version of use rectangle component inside NodeLabel class
 class MyRect extends PureComponent {
   render() {
     const { name, x, y, fill, opacity, width, height } = this.props.rectProps;

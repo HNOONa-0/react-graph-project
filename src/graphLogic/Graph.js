@@ -1,23 +1,13 @@
-// changes
-// exported as default
-// made changes to setV2d
-// import { Fill, maxNodes } from "../limits";
 import { Fill, maxNodes } from "../myData/limits";
-// import { setV2d } from "../utilityFuncs";
 import setV2d from "../myUtils/setV2d";
 
 class Graph {
   constructor() {
-    // edgeStack is for chaching purposes
-    // can we make adjacency list dynamic? yes!, using a set (hashmap, we can delete/insert in O(1))
-
-    // this.graphMap = setV2d(maxNodes + 10, maxNodes + 10);
+    // init data fields as necessary
     this.graphMap = setV2d(maxNodes + 10, maxNodes + 10, "array", "0");
-    // this.edgeStack = setV2d(maxNodes + 10, maxNodes + 10, 1, 2);
     this.edgeStack = setV2d(maxNodes + 10, maxNodes + 10, "array", "array");
-    // this.adjacencyList = setV2d(maxNodes + 10, 0, 2);
+    // adjacency list is of type set
     this.adjacencyList = setV2d(maxNodes + 10, 0, "set");
-    // console.log(this.adjacencyList);
   }
   getAdjacencyList = () => {
     return this.adjacencyList;
@@ -30,6 +20,7 @@ class Graph {
   };
   addEdge = (a, b, isDirected) => {
     // m < M
+    // this is a way to add edges orderly, we need to do this later for optimization
     const m = Math.min(a, b);
     const M = Math.max(a, b);
     const isForward = a === m && b === M;
@@ -37,17 +28,19 @@ class Graph {
     this.graphMap[a][b] = 1;
     this.adjacencyList[a].add(b);
 
+    // if its undirected also write opposite edge
     if (!isDirected) {
       this.graphMap[b][a] = 1;
       this.adjacencyList[b].add(a);
     }
-
+    // this step is to optimize graph reconstruction
+    // if we delete some edges from the end
     this.edgeStack[m][M].push({ isDirected, isForward });
   };
   undoEdge = (a, b) => {
     // a < b
     if (this.edgeStack[a][b].empty()) return;
-
+    // remove edge from the stack
     this.edgeStack[a][b].pop();
     if (this.edgeStack[a][b].empty()) {
       this.graphMap[a][b] = 0;
@@ -57,6 +50,9 @@ class Graph {
       this.adjacencyList[b].delete(a);
       return;
     }
+    // was the recorded stack forward
+    // we need to be careful bcs depending on what order we recorded
+    // we need to update accordingly
     const { isDirected, isForward } = this.edgeStack[a][b].top();
 
     if (!isDirected) {
@@ -76,11 +72,12 @@ class Graph {
       this.adjacencyList[b].add(a);
     }
   };
+  // some of these functions may not be used/needed
   completeBFS = (n) => {
+    // run bfs on all components of the graph
     if (!n) return [];
 
     let paths = [];
-    // let visited = setV2d(maxNodes + 10, 0, 4);
     let visited = setV2d(maxNodes + 10, 0, "false");
 
     for (let i = 1; i < n; i++) {
@@ -90,9 +87,9 @@ class Graph {
     return paths;
   };
   completeDFS = (n) => {
+    // run dfs on all components of the graph
     if (!n) return [];
     let paths = [];
-    // let visited = setV2d(maxNodes + 10, 0, 4);
     let visited = setV2d(maxNodes + 10, 0, "false");
 
     for (let i = 1; i < n; i++) {
@@ -106,11 +103,11 @@ class Graph {
   };
   DFS = (
     path = undefined,
-    // visited = setV2d(maxNodes + 10, 0, 4)
     visited = setV2d(maxNodes + 10, 0, "false"),
     from = 0,
     cur = 1
   ) => {
+    // run dfs on single component of the graph
     if (visited[cur]) return;
 
     visited[cur] = true;
@@ -124,14 +121,8 @@ class Graph {
       if (path) path.push(next);
     }
   };
-  BFS = (
-    cur = 1,
-    // visited = setV2d(maxNodes + 10, 0, 4),
-    visited = setV2d(maxNodes + 10, 0, "false")
-  ) => {
-    // let nodesAtIthLevel = setV2d(maxNodes + 10, 0, 1);
-    // nodesAtIthLevel[0].push(cur);
-
+  BFS = (cur = 1, visited = setV2d(maxNodes + 10, 0, "false")) => {
+    // run bfs on single component of the graph
     let nodesAtIthLevel = [[cur]];
     visited[cur] = true;
 
@@ -150,13 +141,11 @@ class Graph {
     return nodesAtIthLevel;
   };
   isCyclic = (
-    // visited = setV2d(maxNodes + 10, 0, 4),
     visited = setV2d(maxNodes + 10, 0, "false"),
     from = 0,
     cur = 1
   ) => {
-    // cur is curIndex, from is just the last place we came from, intially is 0
-    // i think works, for asingle component ofcourse
+    // naive way of checking for a cycle inside our graph
     if (visited[cur]) return true;
 
     // mark as visited
@@ -196,11 +185,7 @@ class Graph {
   };
   isSingleComponent = (n = 0) => {
     // does the graph consists only of a single component
-    // start at root node, if we start at root node & don't visit all the nodes, then, its not a single component
-    // we can use a visited array of N nodes, if one of the nodes after we DFS/dfs starting from the root is unvisited
-    // we dont have a single component
-
-    // let visited = setV2d(maxNodes + 10, 0, 4);
+    // if so, a dfs should visit all components
     let visited = setV2d(maxNodes + 10, 0, "false");
     this.DFS(undefined, visited);
 

@@ -4,14 +4,9 @@
 // https://stackoverflow.com/questions/8289518/algorithm-for-efficiently-drawing-trees
 // https://stackoverflow.com/questions/13128750/what-are-the-step-to-the-reingold-tilford-algorithm-and-how-might-i-program-it
 
-// exported as default
-// made changes to setV2d
-// changed name to TreeNode from TreeNode1
-
-// import { maxNodes } from "../limits";
+// disclaimer: i don't fully understand how the algorithm works though i understand some parts of it
 import { maxNodes } from "../myData/limits";
 
-// import { setV2d } from "../utilityFuncs";
 import setV2d from "../myUtils/setV2d";
 
 const makechildren = (
@@ -39,7 +34,6 @@ class TreeNode {
     number,
     idx,
     adjacencyList,
-    // visited = setV2d(maxNodes + 10, 0, 4)
     visited = setV2d(maxNodes + 10, 0, "false")
   ) {
     visited[idx] = true;
@@ -72,7 +66,6 @@ class TreeNode {
     return n;
   };
   get_lmost_sibling = () => {
-    // console.log(this);
     if (
       !this._lmost_sibling &&
       this.parent &&
@@ -80,13 +73,11 @@ class TreeNode {
     ) {
       this._lmost_sibling = this.parent.children[0];
     }
-    // console.log("inside getlmost" + this._lmost_sibling);
     return this._lmost_sibling;
   };
   static buildTree(
     adjacencyList,
     idx = 1,
-    // visited = setV2d(maxNodes + 10, 0, 4)
     visited = setV2d(maxNodes + 10, 0, "false")
   ) {
     // build tree
@@ -96,13 +87,11 @@ class TreeNode {
     this.first_walk(root);
     this.second_walk(root);
 
-    // this.printInfo(root);
     return root;
   }
   static first_walk(v, distance = 1) {
     if (v.is_leaf()) {
       if (v.get_lmost_sibling()) {
-        // console.log("leaf & with left sibling");
         v.x = v.left_brother().x + distance;
       } else v.x = 0;
     } else {
@@ -115,7 +104,6 @@ class TreeNode {
 
       let midpoint =
         (v.children[0].x + v.children[v.children.length - 1].x) / 2;
-      // console.log(midpoint);
       // let ell = v.children[0];
       // let arr = v.children[v.children.length - 1];
       let w = v.left_brother();
@@ -165,16 +153,12 @@ class TreeNode {
         sor += vor.mod;
       }
       if (vil.right() && !vor.right()) {
-        // console.log(vor.mod);
         vor.thread = vil.right();
         vor.mod += sil - sor;
-        // console.log(vor.mod);
       } else {
         if (vir.left() && !vol.left()) {
-          // console.log(vol.mod);
           vol.thread = vir.left();
           vol.mod += sir - sol;
-          // console.log(vol.mod);
         }
         default_ancestor = v;
       }
@@ -215,6 +199,7 @@ class TreeNode {
     for (const w of v.children) this.second_walk(w, m + v.mod, depth + 1);
   }
   static validateData(rootsData) {
+    // shift nodes so that position of each node >= 0
     for (const data of rootsData) {
       let minX = 0;
       for (const [key, val] of data.mp) minX = Math.min(minX, val.x);
@@ -227,15 +212,18 @@ class TreeNode {
   }
   static treeNodeData(root) {
     if (!root) return null;
-
+    // get component containing root node
     let [X, Y, mp] = [0, 0, this.indexToNode(root)];
     for (const [key, value] of mp) {
+      // record max x value and max y value
+      // this info is important when we shift (validate) the graph
       X = Math.max(X, value.x);
       Y = Math.max(Y, value.y);
     }
     return { mp, X, Y };
   }
   static completeTreeNodeData = (roots) => {
+    // return root data for each root in an array
     if (!roots) return [];
     let rootsData = [];
     for (const root of roots) {
@@ -244,10 +232,10 @@ class TreeNode {
     return rootsData;
   };
   static completeBuildTree = (n, adjacencyList) => {
-    if (!n || !adjacencyList) return [];
+    // build complete multi-tree (forest) structure and return the result
 
+    if (!n || !adjacencyList) return [];
     let roots = [];
-    // let visited = setV2d(maxNodes + 10, 0, 4);
     let visited = setV2d(maxNodes + 10, 0, "false");
     for (let i = 1; i < n; i++) {
       if (visited[i]) continue;
@@ -258,21 +246,20 @@ class TreeNode {
     return roots;
   };
   static printInfo = (root) => {
-    console.log({ idx: root.idx, root });
-    // console.log({ idx: root.idx, x: root.x });
-
+    // just for logging
     for (let i = 0; i < root.children.length; i++)
       this.printInfo(root.children[i]);
   };
   static postOrderIndexToNode(root, mp) {
-    // console.log(root);
-    // only need x and y now
+    // this is preOrder not postOrder, this is bad naming
     mp.set(root.idx, root);
     for (let i = 0; i < root.children.length; i++) {
       this.postOrderIndexToNode(root.children[i], mp);
     }
   }
   static indexToNode(root) {
+    // return a map of idx to node
+    // we might need to reference node by idx later on
     let mp = new Map();
     this.postOrderIndexToNode(root, mp);
     return mp;
@@ -292,6 +279,7 @@ class TreeNode {
     else return 0;
   };
 }
+// older constructor, the new constructor is easier to read and more convenient
 // constructor(parent, depth, number, idx, fromIdx, adjacencyList){
 //     this.x = -1;
 //     this.y = depth;

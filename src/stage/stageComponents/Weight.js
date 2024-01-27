@@ -4,7 +4,7 @@ import ConnectionLine from "./ConnectionLine";
 import MyText from "./MyText";
 import Node from "./Node";
 let weightKey = 0;
-
+// weight that is displayed in the middle of the arrow
 class Weight extends PureComponent {
   static addWeight(w, from, to, pos1, pos2, shapesLayerRef) {
     let weightText = w.toString();
@@ -16,6 +16,8 @@ class Weight extends PureComponent {
     });
     shapesLayerRef.current.add(text);
 
+    // the weight appears in the middle and an angle of rotation
+    // to be displayed properly
     let m = ConnectionLine.getLineMidpoint(
       from,
       to,
@@ -44,13 +46,11 @@ class Weight extends PureComponent {
     return newWeight;
   }
   static angleOfRotation(key1, key2, p1, p2, shapesLayerRef) {
+    // mathmatical formula to rotate text as desired
     const pos1 =
       p1 !== null ? p1 : Node.getPosOfNodeCenter(key1, shapesLayerRef);
     const pos2 =
       p2 !== null ? p2 : Node.getPosOfNodeCenter(key2, shapesLayerRef);
-
-    // console.log(pos1);
-    // console.log(pos1);
 
     let angle = Math.atan2(pos2.y - pos1.y, pos2.x - pos1.x);
     return angle > Math.PI / 2 || angle < -Math.PI / 2
@@ -58,7 +58,6 @@ class Weight extends PureComponent {
       : angle;
   }
   render() {
-    // console.log("im rendering weight" + this.props.props.textProps.key.toString())
     const textProps = this.props.textProps;
     return <MyText textProps={textProps} />;
   }

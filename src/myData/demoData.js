@@ -1,6 +1,6 @@
 import setDemos from "../myUtils/setDemos";
 import { maxDemos } from "./limits";
-// changes
-// uses setDemos instead of makeDemos
+
+// use these random demos in code
 const Demos = setDemos(maxDemos);
 export default Demos;

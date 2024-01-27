@@ -1,14 +1,14 @@
 import React from "react";
 import "./ButtonStyles.css";
-// style={{ backgroundColor: 'transparent' }}
 const Button = ({ onClick, buttonText, className, isDirectedMain }) => {
-  // console.log(isDirectedMain)
-  // const {onClick, buttonText, className} = {props}
   return (
     <button
+      // for some function we need to know current state of isDirected
+      // so as to not have needless renders
+
       onClick={onClick ? () => onClick(buttonText, isDirectedMain) : null}
-      // style={{ backgroundColor: "transparent" }}
       className={className}
+      disabled={!onClick ? true : false}
     >
       {buttonText}
     </button>

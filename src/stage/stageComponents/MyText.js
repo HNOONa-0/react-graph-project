@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { Text } from "react-konva";
+// text that appear below the node
 class MyText extends PureComponent {
   render() {
     const {

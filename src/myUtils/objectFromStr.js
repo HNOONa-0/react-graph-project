@@ -3,6 +3,8 @@
 const objectFromStr = (objectAsStr, index) => {
   objectAsStr = objectAsStr.toString();
   objectAsStr = objectAsStr.toLowerCase();
+  // there is a better way to do this
+  // maybe by using the spread operator, we would not need this function
   switch (objectAsStr) {
     case "set":
       return new Set();

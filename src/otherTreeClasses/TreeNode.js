@@ -1,4 +1,6 @@
 // this one doesnt work
+// this was supposed to be original TreeNode class
+// it was buggy so i re-implemented it
 const rootSize = 1;
 const siblingDistance = 0;
 const treeDistance = 0;

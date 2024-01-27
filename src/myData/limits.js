@@ -1,6 +1,4 @@
-// changes
-// maxDemos is now 50 instead of 20
-// new 2 constants max, min node number on a demo
+// predefined constants used throught the program
 export const maxNodes = 50;
 export const maxChars = 100;
 export const maxLines = 500;

@@ -9,7 +9,7 @@
 // val = "string" -> String, val = "map" -> Map, and so on...
 
 import objectFromStr from "./objectFromStr";
-
+// get a 2 dimensional vector using with the specified type
 const setV2d = (rows = 0, cols = 0, val1, val2) => {
   let v2d = [];
   for (let i = 0; i < rows; i++) {

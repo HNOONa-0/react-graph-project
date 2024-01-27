@@ -40,19 +40,22 @@ class Node extends PureComponent {
     };
   }
   static getPosOfNodeCenter(key, shapesLayerRef) {
+    // find node with this key
     const oldPos = shapesLayerRef.current
       .findOne("." + key.toString() + "group")
       .position();
 
     let newPos = { ...oldPos };
+    // it return upper left corent of the group, we want center of the circle
     newPos.x += Radius;
     newPos.y += Radius;
 
     return newPos;
   }
   render() {
-    // if (this.props.props.groupProps.key == 0) return null
-    // console.log("im rendering node" + this.props.props.groupProps.key.toString())
+    // these functions prevent the node from going out of bounds
+    // and when the node moves, it should move along related connection arrows/lines
+    // as the drag period ends, we must update state of node position to reflect chages
     const { shapeProps, dragBoundFunc, onDragMove, onDragEnd } = this.props;
     const { groupProps, circleProps, textProps } = shapeProps;
     const { key, name, x, y, width, height, draggable } = groupProps;

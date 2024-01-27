@@ -1,5 +1,3 @@
-// new
-// now main component is in "Home" so it makes sense
 import React from "react";
 import { MainComponent } from "../mainComponent/MainComponent";
 const Home = (props) => {

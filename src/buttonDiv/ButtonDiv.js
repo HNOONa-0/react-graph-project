@@ -18,7 +18,6 @@ class ButtonDiv extends Component {
     super(props);
   }
   onClick = (buttonText, state = undefined) => {
-    // const { isDirectedMain, isUpdate, isAnime } = this.props.bools;
     const {
       resetScale,
       scatter,
@@ -29,6 +28,7 @@ class ButtonDiv extends Component {
       setIsDirectedMain,
       downloadURI,
     } = this.props.funcs;
+    // could have just used a map but every button calls the right function
     switch (buttonText) {
       case "Reset scale":
         resetScale();
@@ -62,22 +62,13 @@ class ButtonDiv extends Component {
     }
   };
   render() {
-    // console.log(this.props.bools);
     const { isDirectedMain, isUpdate, isAnime } = this.props.bools;
-    // const {
-    //   setIsDirectedMain,
-    //   scatter,
-    //   resetScale,
-    //   tree,
-    //   downloadURI,
-    //   loadRandomDemo,
-    //   animateDFS,
-    //   animateBFS,
-    // } = this.props.funcs;
+    // i had to divide button div into smaller flexboxes to get desired behaviour
     return (
       <div className="button-div-1">
         <div className="button-div-2">
           <Button
+            // i should instead have used the disabled property
             onClick={isUpdate || isAnime ? null : this.onClick}
             buttonText={"Reset scale"}
             className={"button-1 button-4"}

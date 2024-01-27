@@ -1,13 +1,13 @@
 import Konva from "konva";
 import React, { PureComponent } from "react";
 import { Group } from "react-konva";
-// import { Fill, FontSize, Radius } from "../../limits";
 import { Fill, FontSize, Radius } from "../../myData/limits";
 import MyRect from "./MyRect";
 import MyText from "./MyText";
-
+// label that appears below the node
 class NodeLabel extends PureComponent {
   static addLabel(t, pos, idx, c = 0, shapesLayerRef) {
+    // c was used for position purposes but now it's not used
     let text = new Konva.Text({
       fontSize: FontSize,
       fontFamily: "sans-serif",
@@ -15,6 +15,8 @@ class NodeLabel extends PureComponent {
     });
     shapesLayerRef.current.add(text);
 
+    // it's positions is related to the node so we first find the position
+    // of accompanying node
     const newLabel = {
       groupProps: {
         key: idx,
@@ -45,13 +47,10 @@ class NodeLabel extends PureComponent {
         align: "center",
       },
     };
-
     text.destroy();
     return newLabel;
   }
   render() {
-    // console.log("im rendering NodeLabel" + this.props.props.groupProps.key.toString())
-    // if (this.props.props.groupProps.id === 0) return null
     const shapeProps = this.props.shapeProps;
     const { groupProps, rectProps, textProps } = shapeProps;
     const { key, name, x, y, width, height } = groupProps;

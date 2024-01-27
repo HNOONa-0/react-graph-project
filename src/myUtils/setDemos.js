@@ -7,11 +7,9 @@ import {
   minDemos,
 } from "../myData/limits";
 import { randomBetween } from "./myRandomFunctions";
-// changes
-// makeDemos is now set demos
-// there is max and min demo node number
-// use randomBetween instead of randomNumberGenerator
+
 const setDemos = (n = randomBetween(minDemos, maxDemos + 1)) => {
+  // init with fixed demos
   let demos = [
     "1 2\n2 3\n3 4\n4 5\n5 6\n6 8\n6 9\n",
     "1 2\n2 3\n1 4\n4 5\n1 6\n6 7\n",
@@ -26,7 +24,9 @@ const setDemos = (n = randomBetween(minDemos, maxDemos + 1)) => {
     "1 2\n1 3\n1 4\n1 5\n",
     "1 2\n1 3\n2 4\n3 5\n4 6\n5 7\n",
   ];
-
+  // compute the demos
+  // this is just a function to compute a random demo
+  // it takes some measures so as to not run into infinity loop
   for (let i = 0; i < n; i++) {
     let lines = randomBetween(minDemoLines, maxDemoLines + 1);
     let s = "";
@@ -45,21 +45,13 @@ const setDemos = (n = randomBetween(minDemos, maxDemos + 1)) => {
         continue;
       }
 
-      // const hasWeight = randomBetween(0, 2);
       s += nodeA.toString() + " " + nodeB.toString() + "\n";
       if (!mp.get(nodeA)) mp.set(nodeA, new Set());
       mp.get(nodeA).add(nodeB);
-      // +
-      // (!hasWeight ? " " + randomBetween(1, 99999).toString() : "") +
-      // "\n";
-      // const isDirected = randomBetween(0, 1);
-      // if (j !== lines - 1) s += "\n"
-      // else s += null
       j++;
     }
     demos.push(s);
   }
-  // console.log(demos);
   return demos;
 };
 export default setDemos;

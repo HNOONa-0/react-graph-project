@@ -1,17 +1,10 @@
-// exported as default
-// made changes to setV2d
-
-// import { maxNodes } from "../limits";
 import { maxNodes } from "../myData/limits";
 
-// import { setV2d } from "../utilityFuncs";
 import setV2d from "../myUtils/setV2d";
-// a < b, bettter let  m < M
 class Weight {
   constructor() {
-    // this.weightMap = setV2d(maxNodes + 10, maxNodes + 10);
     this.weightMap = setV2d(maxNodes + 10, maxNodes + 10, "array", "0");
-    // this.weightStack = setV2d(maxNodes + 10, maxNodes + 10, 1, 2);
+    // weight stack is also for optimization purposes
     this.weightStack = setV2d(maxNodes + 10, maxNodes + 10, "array", "array");
   }
   getWeightMap = () => {
@@ -36,7 +29,7 @@ class Weight {
     const M = Math.max(a, b);
 
     if (this.weightStack[m][M].length === 0) return;
-
+    // this logic is less complicated than undoEdge as direction is not present
     this.weightStack[a][b].pop();
 
     if (this.weightStack[a][b].length === 0) {
@@ -50,8 +43,7 @@ class Weight {
     this.weightMap[a][b] = w;
     this.weightMap[b][a] = w;
   };
-  redoWeight = (a, b) => {
-    // does nothing
-  };
+  // add this in the future
+  redoWeight = (a, b) => {};
 }
 export default Weight;

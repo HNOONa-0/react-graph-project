@@ -5,6 +5,10 @@ let arrowKey = 0;
 
 class ConnectionArrow extends PureComponent {
   static addArrow(from, to, pos1 = null, pos2 = null, shapesLayerRef) {
+    // each arrow/line has key, name and defined by points
+    // we use key and name later if we would like to refernce the arrow/line
+    // a connection arrow/line connect from and to nodes
+    // so if one node moves the would too
     return {
       arrowProps: {
         key: ++arrowKey,
@@ -15,8 +19,6 @@ class ConnectionArrow extends PureComponent {
     };
   }
   render() {
-    // console.log("im rendering Connectionarrow" + this.props.props.arrowProps.key.toString())
-    // console.log(this.props)
     const { key, name, points } = this.props.arrowProps;
     return (
       <Arrow

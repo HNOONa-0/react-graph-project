@@ -1,21 +1,19 @@
-// changes
-// exported as default
-// made changes to setV2d
 import Graph from "../graphLogic/Graph";
 import TreeNode from "../graphLogic/TreeNode";
 import Weight from "../graphLogic/Weight";
 import KeyMaster from "../keyLogic/KeyMaster";
 
-// import { maxNodes } from "../limits";
-import { maxNodes } from "../myData/limits";
-// import { setV2d } from "../utilityFuncs";
 import setV2d from "../myUtils/setV2d";
 
 class GraphInfo {
   constructor() {
+    // graph to hold actual nodes
+    // keyMaster distribute random keys to nodes
+    // weight is holds the optional weight of an edge
     this.graph = new Graph();
     this.keyMaster = new KeyMaster();
     this.weight = new Weight();
+    // these fields are specific the tree function that would position the graph as a tree
     this.treeRoots = null;
     this.treeRootsData = null;
   }
@@ -26,6 +24,8 @@ class GraphInfo {
     return this.graph.getAdjacencyList();
   };
   getTreeRoots = () => {
+    // if we didnt run build tree before run it now
+    // if ran it once, no need to run it again when the graph has not changed
     if (!this.treeRoots)
       this.treeRoots = TreeNode.completeBuildTree(
         this.getNumOfNodes(),
@@ -35,6 +35,9 @@ class GraphInfo {
   };
   getTreeRootsData = () => {
     const treeRoots = this.getTreeRoots();
+    // validate data maake sure that there is no negative coordinates
+    // treeRootsData carry some additional info about each root
+    // validateData is a bad name bcs data is being modified
     if (!this.treeRootsData)
       this.treeRootsData = TreeNode.validateData(
         TreeNode.completeTreeNodeData(treeRoots)
@@ -43,41 +46,32 @@ class GraphInfo {
   };
   completeTreeRootsDFS = (roots = this.getTreeRoots()) => {
     if (!roots.length) return [];
-
-    // let visited = setV2d(maxNodes + 10, 0, 4);
-    // let visited = setV2d(maxNodes + 10, 0, "false");
+    // run dfs on all roots, and return the result orderly
+    // used later to run an animation
     let paths = [];
-    // console.log(roots);
     for (const root of roots) {
       let path = [];
-      // this.treeRootsDFS(rootpath);
-      // this.treeRootDFS(root, path, visited);
       this.treeRootDFS(root, path);
       paths.push(path);
     }
     return paths;
   };
-  // treeRootDFS = (root, path, visited) => {
   treeRootDFS = (root, path) => {
-    // if (!root || !path || !visited) throw "treeRootDfs needs arguments";
-    if (!root || !path) throw "treeRootDfs needs arguments";
-    // if (visited[root.idx]) throw "treeRootDfs visited a node before";
+    // recursive dfs on single root
+    // push nodes twice to use them later for animations
 
     const idx = root.idx;
-    // visited[idx] = true;
     path.push(idx);
 
     for (const next of root.children) {
-      // this.treeRootDFS(next, path, visited);
       this.treeRootDFS(next, path);
       path.push(next.idx);
     }
   };
   completeTreeRootsBFS = (treeRootsData = this.getTreeRootsData()) => {
+    // compute tree of all components using treeRootBFS (that does so for single component) using
     if (!treeRootsData.length) return [];
 
-    // let visited = setV2d(maxNodes + 10, 0, 4);
-    // let visited = setV2d(maxNodes + 10, 0, "false");
     let paths = [];
     for (const data of treeRootsData) {
       const { mp, X, Y } = data;
@@ -86,8 +80,7 @@ class GraphInfo {
     return paths;
   };
   treeRootBFS = (mp, Y) => {
-    // easy, we have y level of roots & Y of every tree
-    // if (!root || !visited) throw "treeRootBFS needs arguments";
+    // we just push nodes to required level
     // setV2d(Y + 1, 0);
     let nodesAtLevelI = setV2d(Y + 1, 0, "array");
     for (const [key, val] of mp) {
@@ -113,8 +106,6 @@ class GraphInfo {
   getDFSPath = () => {
     let path = [];
     this.graph.DFS(path);
-    // console.log(path);
-
     return path;
   };
 }
